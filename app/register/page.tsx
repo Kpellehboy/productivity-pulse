@@ -1,3 +1,4 @@
+// components/Register.tsx
 "use client"; // This is required because we use event handlers and state
 
 import { useState } from "react";
@@ -47,7 +48,7 @@ export default function Register() {
               id="email"
               type="email"
               placeholder="Email"
-              className="w-full px-4 py-2 mt-2 border rounded-md"
+              className="w-full px-4 py-2 mt-2 border rounded-md text-gray-900 placeholder-gray-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -63,7 +64,7 @@ export default function Register() {
               id="password"
               type="password"
               placeholder="Password"
-              className="w-full px-4 py-2 mt-2 border rounded-md"
+              className="w-full px-4 py-2 mt-2 border rounded-md text-gray-900 placeholder-gray-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
