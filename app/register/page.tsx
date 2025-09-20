@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link"; // Import the Link component
 import { supabase } from "@/lib/supabase"; // Import the Supabase client we just created
 
 export default function Register() {
@@ -85,9 +86,10 @@ export default function Register() {
             >
               {loading ? "Loading..." : "Register"}
             </button>
-            <a href="/" className="text-sm text-blue-600 hover:underline">
+            {/* Replace <a> with <Link> */}
+            <Link href="/" className="text-sm text-blue-600 hover:underline">
               Already have an account?
-            </a>
+            </Link>
           </div>
         </form>
       </div>
