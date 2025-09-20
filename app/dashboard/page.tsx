@@ -1,15 +1,14 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { User } from '@supabase/supabase-js';
 import ActivityCard from "@/components/ActivityCard";
 import Timer from "@/components/Timer";
 import ExportImport from "@/components/ExportImport";
 import Charts from "@/components/Charts";
 import Reports from "@/app/dashboard/reports/page";
-
 
 
 interface Activity {
@@ -26,13 +25,11 @@ interface Activity {
 
 export default function Dashboard() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [formLoading, setFormLoading] = useState(false);
-  const [showForm, setShowForm] = useState(false); // New state for form visibility
-  
-  // New state to manage which tab is active (Activities, Charts, Reports, etc.)
+  const [showForm, setShowForm] = useState(false);
   const [activeTab, setActiveTab] = useState('activities');
 
   const [activity, setActivity] = useState({
@@ -47,8 +44,9 @@ export default function Dashboard() {
   useEffect(() => {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
+      // Change redirect from /login to /
       if (!data.user) {
-        router.push("/login");
+        router.push("/");
       } else {
         setUser(data.user);
         fetchActivities(data.user.id);
@@ -72,17 +70,12 @@ export default function Dashboard() {
     }
   };
 
-  // Helper function to format time for database
   const formatTimeForDB = (date: string, time: string): string | null => {
     if (!time) return null;
-
-    // Ensure time is in HH:MM format (add colon if missing)
     let formattedTime = time;
     if (time.length === 4 && !time.includes(':')) {
       formattedTime = `${time.slice(0, 2)}:${time.slice(2)}`;
     }
-
-    // Combine date and time into a proper ISO string
     return `${date}T${formattedTime}:00.000Z`;
   };
 
@@ -92,7 +85,6 @@ export default function Dashboard() {
 
     setFormLoading(true);
 
-    // Format times for database
     const startTimeDB = formatTimeForDB(activity.date, activity.start_time);
     const endTimeDB = formatTimeForDB(activity.date, activity.end_time);
 
@@ -122,7 +114,7 @@ export default function Dashboard() {
         end_time: "",
         date: new Date().toISOString().split('T')[0],
       });
-      setShowForm(false); // Close form after submission
+      setShowForm(false);
       fetchActivities(user.id);
     }
     setFormLoading(false);
@@ -144,13 +136,15 @@ export default function Dashboard() {
     if (error) {
       alert("Error deleting activity: " + error.message);
     } else {
-      fetchActivities(user.id);
+      // Fix for the error: check if user exists before fetching activities
+      if (user) {
+        fetchActivities(user.id);
+      }
     }
   };
 
   const handleEdit = (id: string) => {
     console.log("Edit activity:", id);
-    // Implement edit functionality
   };
 
   const handleActivityCreated = () => {
@@ -167,7 +161,6 @@ export default function Dashboard() {
     );
   }
 
-  // A component to display based on the activeTab state
   const renderContent = () => {
     switch (activeTab) {
       case 'activities':
@@ -222,7 +215,6 @@ export default function Dashboard() {
           </>
         );
       case 'charts':
-        // No longer passing the activities prop, Charts will handle its own data fetching.
         return <Charts />;
       case 'reports':
         return <Reports />;
@@ -235,7 +227,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
@@ -252,7 +243,8 @@ export default function Dashboard() {
               <button
                 onClick={async () => {
                   await supabase.auth.signOut();
-                  router.push("/login");
+                  // Change redirect from /login to /
+                  router.push("/");
                 }}
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2"
               >
@@ -267,7 +259,6 @@ export default function Dashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Floating Add Button */}
         <div className="fixed bottom-6 right-6 z-10 lg:hidden">
           <button
             onClick={() => setShowForm(!showForm)}
@@ -283,7 +274,6 @@ export default function Dashboard() {
           </button>
         </div>
         
-        {/* Tab Navigation */}
         <div className="mb-8 flex space-x-4 border-b border-gray-200">
           <button
             onClick={() => setActiveTab('activities')}
@@ -312,7 +302,6 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Form */}
           <div className={`lg:col-span-1 ${showForm ? 'block' : 'hidden lg:block'}`}>
             <div className="bg-white rounded-xl shadow-md p-6 mb-8 sticky top-8">
               <div className="flex justify-between items-center mb-4 lg:hidden">
@@ -448,7 +437,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Right Column - Dynamic Content based on activeTab */}
           <div className="lg:col-span-2">
             <div className="grid grid-cols-1 gap-8">
               {renderContent()}
@@ -459,4 +447,3 @@ export default function Dashboard() {
     </div>
   );
 }
-

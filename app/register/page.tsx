@@ -1,4 +1,3 @@
-// app/register/page.tsx
 "use client"; // This is required because we use event handlers and state
 
 import { useState } from "react";
@@ -28,7 +27,7 @@ export default function Register() {
     } else if (data.user) {
       // 2. If registration was successful, redirect to the login page
       alert("Registration successful! Please check your email for verification.");
-      router.push("/login");
+      router.push("/");
     }
     setLoading(false);
   };
@@ -86,7 +85,7 @@ export default function Register() {
             >
               {loading ? "Loading..." : "Register"}
             </button>
-            <a href="/login" className="text-sm text-blue-600 hover:underline">
+            <a href="/" className="text-sm text-blue-600 hover:underline">
               Already have an account?
             </a>
           </div>

@@ -1,7 +1,6 @@
-// app/dashboard/reports/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -39,11 +38,8 @@ export default function Reports() {
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<"7" | "30">("7");
 
-  useEffect(() => {
-    fetchActivities();
-  }, [timeRange]);
-
-  const fetchActivities = async () => {
+  // Wrap fetchActivities in useCallback to make it a stable dependency
+  const fetchActivities = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -66,7 +62,12 @@ export default function Reports() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [timeRange]);
+
+  // Now, add fetchActivities to the dependency array
+  useEffect(() => {
+    fetchActivities();
+  }, [fetchActivities]);
 
   const processData = () => {
     const days = Array.from({ length: parseInt(timeRange) }, (_, i) => {
@@ -145,7 +146,6 @@ export default function Reports() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Bar Chart */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">
               Activities per Day (Last {timeRange} Days)
@@ -175,7 +175,6 @@ export default function Reports() {
             )}
           </div>
 
-          {/* Doughnut Chart */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">
               Category Distribution
@@ -198,7 +197,6 @@ export default function Reports() {
           </div>
         </div>
 
-        {/* Statistics */}
         <div className="bg-white rounded-lg shadow-md p-6 mt-8">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Summary</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
