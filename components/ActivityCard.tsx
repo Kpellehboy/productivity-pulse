@@ -42,8 +42,13 @@ export default function ActivityCard({
   const calculateDuration = () => {
     if (!start_time || !end_time) return "";
     
+<<<<<<< HEAD
     const start = new Date(start_time);
     const end = new Date(end_time);
+=======
+    const start = new Date(`2000-01-01T${start_time.includes('T') ? start_time.split('T')[1] : start_time}`);
+    const end = new Date(`2000-01-01T${end_time.includes('T') ? end_time.split('T')[1] : end_time}`);
+>>>>>>> 63ef90aa7493fe15db7093d3bbd73fbab6c2aa2e
     
     const diffMs = end.getTime() - start.getTime();
     const hours = Math.floor(diffMs / (1000 * 60 * 60));

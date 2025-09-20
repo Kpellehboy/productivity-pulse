@@ -6,9 +6,14 @@ import { supabase } from "@/lib/supabase";
 import { User } from '@supabase/supabase-js';
 import ExportImport from "@/components/ExportImport";
 import Charts from "@/components/Charts";
+<<<<<<< HEAD
 import Timer from "@/components/Timer";
 import ActivityCard from "@/components/ActivityCard"; // Added ActivityCard import
 import Reports from "@/app/dashboard/reports/page";
+=======
+import Reports from "@/app/dashboard/reports/page";
+import Timer from "@/components/Timer";
+>>>>>>> 63ef90aa7493fe15db7093d3bbd73fbab6c2aa2e
 
 
 interface Activity {
@@ -63,6 +68,7 @@ export default function Dashboard() {
       fetchActivities(user.id);
     }
   };
+<<<<<<< HEAD
   
   const handleEdit = (id: string) => {
       // Logic for editing an activity
@@ -87,6 +93,8 @@ export default function Dashboard() {
       alert("Error deleting activity. Please try again.");
     }
   };
+=======
+>>>>>>> 63ef90aa7493fe15db7093d3bbd73fbab6c2aa2e
 
   if (loading) {
     return (
@@ -96,6 +104,7 @@ export default function Dashboard() {
     );
   }
 
+<<<<<<< HEAD
   const ActivitiesList = () => (
     <div className="mt-8">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">Recent Activities</h2>
@@ -127,14 +136,20 @@ export default function Dashboard() {
     </div>
   );
 
+=======
+>>>>>>> 63ef90aa7493fe15db7093d3bbd73fbab6c2aa2e
   const renderContent = () => {
     switch (activeTab) {
       case 'activities':
         return (
+<<<<<<< HEAD
           <>
             <Timer onActivityCreated={handleActivityCreated} />
             <ActivitiesList />
           </>
+=======
+          <Timer onActivityCreated={handleActivityCreated} />
+>>>>>>> 63ef90aa7493fe15db7093d3bbd73fbab6c2aa2e
         );
       case 'charts':
         return <Charts />;
@@ -150,10 +165,62 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-100">
       <style jsx global>{`
+<<<<<<< HEAD
         @keyframes glowing-border { 0% { border-color: #ef4444; } 25% { border-color: #f97316; } 50% { border-color: #eab308; } 75% { border-color: #22c55e; } 100% { border-color: #0ea5e9; } }
         @keyframes glowing-text { 0% { color: #ef4444; } 25% { color: #f97316; } 50% { color: #eab308; } 75% { color: #22c55e; } 100% { color: #0ea5e9; } }
         .glowing-border-pulse { animation: glowing-border 2s linear infinite alternate; }
         .glowing-text-pulse { animation: glowing-text 2s linear infinite alternate; }
+=======
+        @keyframes glowing-border {
+          0% {
+            border-color: #ef4444; /* red-500 */
+          }
+          25% {
+            border-color: #f97316; /* orange-500 */
+          }
+          50% {
+            border-color: #eab308; /* yellow-500 */
+          }
+          75% {
+            border-color: #22c55e; /* green-500 */
+          }
+          100% {
+            border-color: #0ea5e9; /* sky-500 */
+          }
+        }
+        @keyframes glowing-text {
+          0% {
+            color: #ef4444; /* red-500 */
+          }
+          25% {
+            color: #f97316; /* orange-500 */
+          }
+          50% {
+            color: #eab308; /* yellow-500 */
+          }
+          75% {
+            color: #22c55e; /* green-500 */
+          }
+          100% {
+            color: #0ea5e9; /* sky-500 */
+          }
+        }
+        .glowing-border-pulse {
+          animation: glowing-border 2s linear infinite alternate;
+        }
+        .glowing-text-pulse {
+          animation: glowing-text 2s linear infinite alternate;
+        }
+        .animate-rainbow-bg {
+          background-size: 200% auto;
+          animation: rainbow-bg 3s linear infinite;
+        }
+        @keyframes rainbow-bg {
+          to {
+            background-position: 200% center;
+          }
+        }
+>>>>>>> 63ef90aa7493fe15db7093d3bbd73fbab6c2aa2e
       `}</style>
       
       <header className="bg-white shadow-sm border-b">
@@ -218,8 +285,15 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 gap-8">
+<<<<<<< HEAD
           <div className="col-span-1 rounded-xl shadow-lg p-6 bg-white">
             {renderContent()}
+=======
+          <div className="col-span-1 rounded-xl shadow-lg p-1 bg-gradient-to-r from-red-400 via-yellow-400 to-blue-400 animate-rainbow-bg">
+            <div className="bg-white rounded-xl h-full w-full">
+              {renderContent()}
+            </div>
+>>>>>>> 63ef90aa7493fe15db7093d3bbd73fbab6c2aa2e
           </div>
         </div>
       </main>
