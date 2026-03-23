@@ -30,5 +30,5 @@ A modern activity tracking application designed to help you monitor your daily p
 
 1. **Clone the repository**
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/Kpellehboy/productivity-pulse.git
    cd productivity-pulse
